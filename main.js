@@ -7,7 +7,9 @@
                 search: true,
                 cancel: false,
                 input: false,
-                nopic: false
+                nopic: false,
+                canvas: false,
+                canvasSrc: ''
             }
         },
         methods: {
@@ -42,6 +44,11 @@
                         this.nopic = false;
                     }
                 }
+            },
+            showCanvas(index){
+                this.canvasSrc = this.images[index].src;
+                this.canvas = true;
+                this.images[index].done = !this.images[index].done;
             }
         },
         computed: {

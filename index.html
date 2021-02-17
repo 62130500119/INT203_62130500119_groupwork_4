@@ -27,28 +27,28 @@
 <body>
   <div id="app" class="flex flex-col justify-center items-center">
     <h1 class="text-3xl font-bold py-5">Photo Gallery ({{countPhoto}})</h1>
-    <div class="w-2/6 p-3 flex flex-row-reverse">
-      <button v-show="search" @click="toggleSearch"><i class="im im-magnifier" style="font-size: 2.65em"></i></button>
+    <div class="w-2/6 p-3 flex flex-row-reverse" v-show="!canvas">
+      <button v-show="search" @click="toggleSearch" class="focus:outline-none"><i class="im im-magnifier" style="font-size: 2.65em"></i></button>
       <button v-show="cancel" @click="toggleSearch"
         class="w-20 h-12 mx-1 text-xl text-white bg-blue-500 rounded-md">Cancel</button>
       <input v-show="input" type="text" v-model="inputTask" @keyup.enter="searching" placeholder="Enter a new task ..."
         class="bg-white rounded flex-1 border-b-2 border-blue-300 focus:outline-none">
     </div>
+    <div class="w-2/6 p-4 bg-gray-900 flex" v-show="canvas">
+      <img :src="canvasSrc" class="w-11/12">
+      <button v-on:click="canvas = false" class="h-1/4 focus:outline-none items-start">
+        <i class="im im-x-mark text-white mx-5"></i>
+      </button>
+    </div>
     <ul class="w-2/6">
-      <li v-for="img in images" v-show="img.show" class="flex items-center">
-        <button v-on:click="img.done = !img.done" class="focus:outline-none">
-          <img :src="img.src" v-show="!img.done" class="w-80 p-2">
+      <li v-for="(img,index) in images" class="flex items-center" v-show="img.show">
+        <button v-on:click="showCanvas(index)" class="focus:outline-none">
+          <img :src="img.src" class="w-80 p-2">
         </button>
-        <div class="w-full p-4 bg-gray-900 flex" v-show="img.done">
-          <img :src="img.src" class="w-11/12">
-          <button v-on:click="img.done = !img.done" class="h-1/4 focus:outline-none items-start">
-            <i class="im im-x-mark text-white mx-5"></i>
-          </button>
-        </div>
-        <span class="w-52" v-show="!img.done">
+        <span class="w-52">
           <p class="text-2xl px-5">{{img.title}}</p>
         </span>
-        <i v-show="img.done" class="im im-heart text-red-400"></i>
+        <i class="im im-heart text-red-400" v-show="img.done"></i>
       </li>
       <div v-show="nopic" class="p-10 flex justify-center items-center">
         <h1 class="text-4xl font-bold">No Picture!</h2>
